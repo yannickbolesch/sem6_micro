@@ -240,7 +240,6 @@ int main (int argc, char** argv)
 						break;
 					}
 					prev_result =  result[counter];
-					calculate_statistics(&stat,operand_a,operand_b);
 					counter++;
 				}
 			}
