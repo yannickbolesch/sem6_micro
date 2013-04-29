@@ -21,9 +21,11 @@ Zur Veranschaulichung wird ein Zugang auf [github.com](http://github.com) einger
 Es wird ein einfaches Hello World Programm erstellt und und dies in git importiert
 
 Ein leeres git Repository erzeugen
+
     $ git init
 
 Hello World unter Versionsverwaltung stellen:
+
     $ git add hello.c
     $ git add HelloWorld.sln
     $ git add HelloWorld\HelloWorld.vcxproj
