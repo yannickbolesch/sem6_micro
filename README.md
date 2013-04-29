@@ -34,3 +34,21 @@ Hello World unter Versionsverwaltung stellen:
 
     $ git status 
 
+### Die Dateien commiten
+
+    $ git commit -m "initial commit"
+
+### Eine Datei verändern und erneut den Status prüfen
+
+    $ git status
+
+### Eine Datei löschen
+
+    $ rm HelloWorld.c
+    $ git status
+    
+### Wiederherstellen der Datei:
+
+   $ git checkout HelloWorld.c
+
+
