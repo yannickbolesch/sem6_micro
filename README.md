@@ -51,4 +51,10 @@ Hello World unter Versionsverwaltung stellen:
 
    $ git checkout HelloWorld.c
 
+### Anzeige git log
 
+   $ git log
+
+### Anzeige des Logs einer Datei:
+
+   $ git log README.md
