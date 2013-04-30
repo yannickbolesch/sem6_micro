@@ -166,6 +166,7 @@ int main (int argc, char** argv)
 	int32_t ret = EXIT_SUCCESS;
 	FILE * in_file_hdl = NULL;
 	FILE * out_file_hdl = NULL;
+	doubleLinkedList_t result_list;
 	listNode_t *curr = result_list.headOfList;
 	int idx = 0;
 
@@ -280,4 +281,16 @@ void calculate_statistics(statistics_t * stat,uint32_t operand_a,uint32_t operan
 		stat->avg_operand_a = stat->sum_operand_a/stat->counter;
 		stat->avg_operand_b = stat->sum_operand_b/stat->counter;
 	}
+}
+
+
+listNode_t* list_get_new_element(uint32_t operand_a,uint32_t operand_b,uint64_t result)
+{
+
+}
+
+
+int list_push_back(doubleLinkedList_t *list, listNode_t* elem)
+{
+
 }
