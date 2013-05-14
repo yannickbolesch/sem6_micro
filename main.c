@@ -161,15 +161,19 @@ int list_push_back(doubleLinkedList_t *list, listNode_t* elem);
  */
 uint64_t do_mac_operation(int32_t operand_a,uint32_t operand_b,uint64_t prev_result);
 
+listNode_t* static_malloc(); 
+
+void static_free(listNode_t* elem);
+
 int main (int argc, char** argv)
 {
 	int32_t ret = EXIT_SUCCESS;
-	FILE * in_file_hdl = NULL;
-	FILE * out_file_hdl = NULL;
+	FILE* in_file_hdl = NULL;
+	FILE* out_file_hdl = NULL;
 	doubleLinkedList_t result_list;
-	listNode_t *curr = result_list.headOfList;
-	int idx = 0;
-
+	//listNode_t *curr = result_list->headOfList;
+	//int idx = 0;
+	
 	statistics_t stat;
 	stat.avg_operand_a = 0;
 	stat.avg_operand_b = 0;
@@ -180,6 +184,9 @@ int main (int argc, char** argv)
 	stat.min_operand_a = 0xFFFFFFFF;
 	stat.min_operand_b = 0xFFFFFFFF;
 	stat.counter = 0;
+
+	result_list.headOfList = NULL;
+	result_list.tailOfList = NULL;
 
 	if(EXIT_FAILURE == init_stop_watch())
 	{
@@ -198,8 +205,9 @@ int main (int argc, char** argv)
 	{
 		uint32_t counter = 0; 
 		char line_buffer[MAX_LINE_BUFFER];
-		int operand_a = 0; 
-		int operand_b = 0; 
+		uint32_t operand_a = 0; 
+		uint32_t operand_b = 0; 
+		uint64_t result = 0; 
 		uint64_t prev_result = 0; 
 		uint64_t delta_time = 0;
 		/*
@@ -230,18 +238,53 @@ int main (int argc, char** argv)
 				}
 				else
 				{
-					result[counter] = do_mac_operation(operand_a,operand_b,prev_result);
-					operands_a[counter] = operand_a;
-					operands_b[counter] = operand_b;
-					fprintf(out_file_hdl,"%llu = %llu + (%d * %d)\n",result[counter],prev_result,operand_a, operand_b);
-					printf("%llu = %llu + (%d * %d)\n",result[counter],prev_result,operand_a, operand_b);
-					ret = list_push_back(&result_list,list_get_new_element(operand_a,operand_b,result[counter]));
+					// MAC
+					if(result_list.tailOfList == NULL)
+					{
+						prev_result = 0;
+					}
+					else
+					{
+						prev_result = result_list.tailOfList->result;
+					}
+					result = do_mac_operation(operand_a, operand_b, prev_result);
+					fprintf(out_file_hdl,"%llu = %llu + (%d * %d)\n",result, prev_result, operand_a, operand_b);
+					printf("%llu = %llu + (%d * %d)\n",result, prev_result,operand_a, operand_b);					
+					ret = list_push_back(&result_list,list_get_new_element(operand_a,operand_b,result));
 					if(EXIT_FAILURE == ret)
 					{
 						break;
 					}
-					prev_result =  result[counter];
+					
 					counter++;
+					
+					// min
+					if(operand_a < stat.min_operand_a)
+					{
+						stat.min_operand_a = operand_a;
+					}
+					if(operand_b < stat.min_operand_b)
+					{
+						stat.min_operand_b = operand_b;
+					}
+
+					// max
+					if(operand_a > stat.max_operand_a)
+					{
+						stat.max_operand_a = operand_a;
+					}
+					if(operand_b > stat.max_operand_b)
+					{
+						stat.max_operand_b = operand_b;
+					}
+
+					// sum
+					stat.sum_operand_a += operand_a;
+					stat.sum_operand_b += operand_b;
+
+					// avg
+					stat.avg_operand_a = stat.sum_operand_a / counter;
+					stat.avg_operand_b = stat.sum_operand_b / counter;
 				}
 			}
 			delta_time = stop_stop_watch();
@@ -284,13 +327,177 @@ void calculate_statistics(statistics_t * stat,uint32_t operand_a,uint32_t operan
 }
 
 
-listNode_t* list_get_new_element(uint32_t operand_a,uint32_t operand_b,uint64_t result)
+int list_insert_before(doubleLinkedList_t *list , listNode_t* old ,listNode_t* elem)
 {
+	if(old->pPrev == NULL)
+	{
+		// old ist das erste element
+		elem->pNext = old;
+		old->pPrev = elem;
+		elem->pPrev = NULL;
+	}
+	else
+	{
+		// old ist irgendein element
+		listNode_t* pHelp = old->pPrev;
+		pHelp->pNext = elem;
+		elem->pNext = old;
+		elem->pPrev = pHelp;
+		old->pPrev = elem;
+	}
+	return EXIT_SUCCESS;
+}
 
+
+int list_insert_after(doubleLinkedList_t *list , listNode_t* old ,listNode_t* elem)
+{
+	if(old->pNext == NULL)
+	{
+		// old ist das letze element
+		old->pNext = elem;
+		elem->pNext = NULL;
+		elem->pPrev = old;
+	}
+	else
+	{
+		// old ist irgendein element
+		listNode_t* pHelp = old->pNext;
+		old->pNext = elem;
+		elem->pNext = pHelp;
+		elem->pPrev = old;
+		pHelp->pPrev = elem;
+	}
+	return EXIT_SUCCESS;
+}
+
+
+void list_free_element(listNode_t* elem)
+{
+	if(NULL != elem)
+	{
+		// elem aus der liste entfernen
+		if(elem->pNext == NULL)
+		{
+			// elem ist das letze
+			elem->pPrev->pNext = NULL;
+		}
+		else if(elem->pPrev == NULL)
+		{
+			// elem das erste
+			elem->pNext->pPrev = NULL;
+		}
+		else
+		{
+			// elem ist in der Mitte
+			elem->pPrev->pNext = elem->pNext;
+			elem->pNext->pPrev = elem->pPrev;
+		}
+		// elem freigeben
+#if STATIC_MEM == 0
+		free(elem);
+#else
+		static_free(elem);
+#endif
+	}
+}
+
+
+int list_push_front(doubleLinkedList_t *list , listNode_t* elem)
+{
+	if(list->headOfList == NULL && list->tailOfList == NULL)
+	{
+		// list initialisieren
+		list->headOfList = elem;
+		list->tailOfList = elem;
+	}
+	else if(list->headOfList == NULL || list->tailOfList == NULL)
+	{
+		// Fehler
+		return EXIT_FAILURE;
+	}
+	elem->pNext = list->headOfList;
+	elem->pPrev = NULL;
+	list->headOfList->pPrev = elem;
+	list->headOfList = elem;
+
+	return EXIT_SUCCESS;
 }
 
 
 int list_push_back(doubleLinkedList_t *list, listNode_t* elem)
 {
+	if(list->headOfList == NULL && list->tailOfList == NULL)
+	{
+		// list initialisieren
+		list->headOfList = elem;
+		list->tailOfList = elem;
+	}
+	else if(list->headOfList == NULL || list->tailOfList == NULL)
+	{
+		// Fehler
+		return EXIT_FAILURE;
+	}
+	elem->pPrev = list->tailOfList;
+	elem->pNext = NULL;
+	list->tailOfList->pNext = elem;
+	list->tailOfList = elem;
 
+	return EXIT_SUCCESS;
+}
+
+
+listNode_t* list_get_new_element(uint32_t operand_a,uint32_t operand_b,uint64_t result)
+{
+	listNode_t* pHelp = NULL;
+#if STATIC_MEM == 0
+	 pHelp = (listNode_t*)malloc(sizeof(listNode_t));
+#else
+	pHelp = static_malloc();
+	if(NULL == pHelp)
+	{
+		printf("error allocating memory!");
+	}
+#endif
+	pHelp->operand_a = operand_a;
+	pHelp->operand_b = operand_b;
+	pHelp->result = result;
+	pHelp->pNext = NULL;
+	pHelp->pPrev = NULL;
+
+	return pHelp;
+}
+
+
+listNode_t* static_malloc()
+{
+	int i;
+	listNode_t* elem = NULL;
+
+	// über ganzen mempool iterieren und freies suchen
+	for(i = 0; i < MEM_POOL_SIZE; i++)
+	{
+		if(0 == list_node_mem_pool[i].inUse)
+		{
+			elem = &list_node_mem_pool[i].node;
+			list_node_mem_pool[i].inUse == 1;
+			i = MEM_POOL_SIZE;
+		}
+	}
+	
+	return elem;
+}
+
+void static_free(listNode_t* elem)
+{
+	int i;
+
+	// über ganzen mempool iterieren und freies suchen
+	for(i = 0; i < MEM_POOL_SIZE; i++)
+	{
+		if(elem == &list_node_mem_pool[i].node)
+		{
+			list_node_mem_pool[i].inUse == 0;
+			i = MEM_POOL_SIZE;
+		}
+	}
 }
