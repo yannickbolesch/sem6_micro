@@ -1,0 +1,37 @@
+﻿Der Buildvorgang wurde am 5/14/2013 5:30:58 PM gestartet.
+     1>Projekt "M:\sem6_micro\programmieraufgabe_i.vcxproj" auf Knoten "2", build Ziel(e).
+     1>InitializeBuildStatus:
+         "Debug\programmieraufgabe_i.unsuccessfulbuild" wird erstellt, da "AlwaysCreate" angegeben wurde.
+       ClCompile:
+         c:\Programme\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fx /FAcs /Fa"Debug\\" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TC /analyze- /errorReport:prompt main.c
+         main.c
+     1>m:\sem6_micro\main.c(196): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programme\microsoft visual studio 10.0\vc\include\stdio.h(234): Siehe Deklaration von 'fopen'
+     1>m:\sem6_micro\main.c(197): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programme\microsoft visual studio 10.0\vc\include\stdio.h(234): Siehe Deklaration von 'fopen'
+     1>m:\sem6_micro\main.c(234): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\programme\microsoft visual studio 10.0\vc\include\stdio.h(325): Siehe Deklaration von 'sscanf'
+     1>m:\sem6_micro\main.c(482): warning C4553: '==': Operator hat keine Auswirkungen; ist '=' beabsichtigt?
+     1>m:\sem6_micro\main.c(499): warning C4553: '==': Operator hat keine Auswirkungen; ist '=' beabsichtigt?
+       ManifestResourceCompile:
+         Alle Ausgaben sind aktuell.
+       Link:
+         c:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"M:\sem6_micro\Debug\programmieraufgabe_i.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\programmieraufgabe_i.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"M:\sem6_micro\Debug\programmieraufgabe_i.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"M:\sem6_micro\Debug\programmieraufgabe_i.lib" /MACHINE:X86 Debug\programmieraufgabe_i.exe.embed.manifest.res
+         Debug\main.obj
+         Debug\stopwatch.obj
+       Manifest:
+         C:\Programme\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\programmieraufgabe_i.exe.embed.manifest" /manifest Debug\programmieraufgabe_i.exe.intermediate.manifest
+         Alle Ausgaben sind aktuell.
+       LinkEmbedManifest:
+         c:\Programme\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"M:\sem6_micro\Debug\programmieraufgabe_i.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\programmieraufgabe_i.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"M:\sem6_micro\Debug\programmieraufgabe_i.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"M:\sem6_micro\Debug\programmieraufgabe_i.lib" /MACHINE:X86 Debug\programmieraufgabe_i.exe.embed.manifest.res
+         Debug\main.obj
+         Debug\stopwatch.obj
+         programmieraufgabe_i.vcxproj -> M:\sem6_micro\Debug\programmieraufgabe_i.exe
+       FinalizeBuildStatus:
+         Die Datei "Debug\programmieraufgabe_i.unsuccessfulbuild" wird gelöscht.
+         Aktualisieren des Timestamps von "Debug\programmieraufgabe_i.lastbuildstate".
+     1>Die Erstellung des Projekts "M:\sem6_micro\programmieraufgabe_i.vcxproj" ist abgeschlossen, build Ziel(e).
+
+Das Erstellen war erfolgreich.
+
+Verstrichene Zeit 00:00:01.31
