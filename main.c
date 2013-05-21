@@ -415,10 +415,13 @@ int list_push_front(doubleLinkedList_t *list , listNode_t* elem)
 		// Fehler
 		return EXIT_FAILURE;
 	}
-	elem->pNext = list->headOfList;
-	elem->pPrev = NULL;
-	list->headOfList->pPrev = elem;
-	list->headOfList = elem;
+	else
+	{
+		elem->pNext = list->headOfList;
+		elem->pPrev = NULL;
+		list->headOfList->pPrev = elem;
+		list->headOfList = elem;
+	}
 
 	return EXIT_SUCCESS;
 }
@@ -437,10 +440,13 @@ int list_push_back(doubleLinkedList_t *list, listNode_t* elem)
 		// Fehler
 		return EXIT_FAILURE;
 	}
-	elem->pPrev = list->tailOfList;
-	elem->pNext = NULL;
-	list->tailOfList->pNext = elem;
-	list->tailOfList = elem;
+	else
+	{
+		elem->pPrev = list->tailOfList;
+		elem->pNext = NULL;
+		list->tailOfList->pNext = elem;
+		list->tailOfList = elem;
+	}
 
 	return EXIT_SUCCESS;
 }
@@ -453,16 +459,19 @@ listNode_t* list_get_new_element(uint32_t operand_a,uint32_t operand_b,uint64_t 
 	 pHelp = (listNode_t*)malloc(sizeof(listNode_t));
 #else
 	pHelp = static_malloc();
+#endif
 	if(NULL == pHelp)
 	{
 		printf("error allocating memory!");
 	}
-#endif
-	pHelp->operand_a = operand_a;
-	pHelp->operand_b = operand_b;
-	pHelp->result = result;
-	pHelp->pNext = NULL;
-	pHelp->pPrev = NULL;
+	else
+	{
+		pHelp->operand_a = operand_a;
+		pHelp->operand_b = operand_b;
+		pHelp->result = result;
+		pHelp->pNext = NULL;
+		pHelp->pPrev = NULL;
+	}
 
 	return pHelp;
 }
